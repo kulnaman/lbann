@@ -2,12 +2,11 @@
 
 import argparse
 import os
-import re
 import sys
-from itertools import product
-
+import re
 import h5py
 import numpy as np
+from itertools import product
 
 if __name__ == "__main__":
     ORIG_WIDTH = 512
@@ -17,7 +16,7 @@ if __name__ == "__main__":
     parser.add_argument("hdf5_files", nargs="*",
                         help="Path to a CosmoFlow HDF5 file.")
     parser.add_argument("--out_dir", type=str, default="dataset",
-                        help="An  optional value.")
+                        help="An optional value.")
     parser.add_argument("--width", type=int, default=128,
                         help="The output spatial width.")
     parser.add_argument("--datatype", type=str, default="float32",
@@ -50,9 +49,15 @@ if __name__ == "__main__":
         h = h5py.File(hdf5_file, "r")
         full = h["full"]
         unitPar = h["unitPar"]
-        assert full.value.shape == tuple([ORIG_WIDTH]*3+[ORIG_NUM_PARAMS])
-        assert unitPar.value.shape == (ORIG_NUM_PARAMS,)
-        full_transposed = full.value.transpose().astype(data_type)
+        
+        # Access data from the datasets
+        full_data = full[:]
+        unitPar_data = unitPar[:]
+        
+        assert full_data.shape == tuple([ORIG_WIDTH]*3+[ORIG_NUM_PARAMS])
+        assert unitPar_data.shape == (ORIG_NUM_PARAMS,)
+        
+        full_transposed = full_data.transpose().astype(data_type)
 
         for ix, iy, iz in product(range(sub_cube_count),
                                   range(sub_cube_count),
@@ -71,4 +76,5 @@ if __name__ == "__main__":
 
             with h5py.File(out_path, "w-") as hw:
                 hw["full"] = cube
-                hw["unitPar"] = unitPar.value
+                hw["unitPar"] = unitPar_data
+

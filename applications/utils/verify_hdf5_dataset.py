@@ -2,7 +2,6 @@ import argparse
 import os
 import re
 import sys
-
 import h5py
 
 if __name__ == '__main__':
@@ -10,7 +9,6 @@ if __name__ == '__main__':
             " Print \"OK\" if the format of the dataset is OK.")
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("dataset_dir", help="Path to the HDF5 dataset.")
-
     parser.add_argument("--key-data", type=str,
                         help="The name of the \"data\" dataset.")
     parser.add_argument("--key-labels", type=str, default=None,
@@ -40,7 +38,7 @@ if __name__ == '__main__':
         line = []
 
         assert args.key_data in fp.keys()
-        volume = fp[args.key_data].value
+        volume = fp[args.key_data][:]
         line.append("data shape: {}, data type: {}, "
                     .format(volume.shape, volume.dtype))
         assert len(volume.shape) == 4
@@ -49,7 +47,7 @@ if __name__ == '__main__':
 
         if args.key_labels is not None:
             assert args.key_labels in fp.keys()
-            labels = fp[args.key_labels].value
+            labels = fp[args.key_labels][:]
             line.append("label shape: {}, label type: {}"
                         .format(labels.shape, labels.dtype))
             assert len(labels.shape) == 4
@@ -58,7 +56,7 @@ if __name__ == '__main__':
 
         if args.key_responses is not None:
             assert args.key_responses in fp.keys()
-            responses = fp[args.key_responses].value
+            responses = fp[args.key_responses][:]
             line.append("response shape: {}, response type: {}"
                         .format(responses.shape, responses.dtype))
             assert len(responses.shape) == 1
@@ -94,3 +92,4 @@ if __name__ == '__main__':
         assert data_dtype_set == response_dtype_set
 
     print("OK")
+

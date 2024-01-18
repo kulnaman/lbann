@@ -105,7 +105,7 @@ if __name__ == "__main__":
     # Model specific arguments
     parser.add_argument(
         '--input-width', action='store', default=128, type=int,
-        help='the input spatial width (default: 128)')
+        help='the input spatial width (default: 512)')
     parser.add_argument(
         '--num-secrets', action='store', default=4, type=int,
         help='number of secrets (default: 4)')
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '--local-batchnorm', action='store_true',
         help='Use local batch normalization mode')
-    default_lc_dataset = '/p/gpfs1/brainusr/datasets/cosmoflow/cosmoUniverse_2019_05_4parE/hdf5_transposed_dim128_float/batch8'
+    default_lc_dataset = '/p/gpfs1/namankul/cosmoUniverse_2019_05_4parE_part'
     for role in ['train', 'val', 'test']:
         default_dir = '{}/{}'.format(default_lc_dataset, role)
         parser.add_argument(

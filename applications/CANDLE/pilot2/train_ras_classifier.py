@@ -121,11 +121,10 @@ if __name__ == '__main__':
     data_reader = construct_data_reader()
     status = lbann.contrib.launcher.run(
         trainer, model, data_reader, opt,
-        account='hpcdl',
-        scheduler='slurm',
-        time_limit=720,
-        nodes=1,
-        procs_per_node=1,
+        scheduler='lsf',
+        time_limit=60,
+        nodes=4,
+        procs_per_node=4,
         setup_only=False,
         job_name='candle_p2_ras_classifier')
     print(status)

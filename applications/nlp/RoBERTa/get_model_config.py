@@ -82,9 +82,9 @@ if __name__ == "__main__":
     if args.no_weights:
         del files['pytorch_model.bin']
 
-    """Download model from huggingface"""
-    for fn, url in files.items():
-        download_file(url, fn)
+    # """Download model from huggingface"""
+    # for fn, url in files.items():
+    #     download_file(url, fn)
 
     if not args.no_weights:
         """ Extract weights """
